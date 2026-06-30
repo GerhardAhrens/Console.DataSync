@@ -80,7 +80,6 @@ namespace System
 
             public static void Title(string title)
             {
-                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(title);
                 Console.WriteLine(new string('=', title.Length));
