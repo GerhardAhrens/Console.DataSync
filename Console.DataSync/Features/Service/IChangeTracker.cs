@@ -2,7 +2,7 @@
 {
     using Console.DataSync.Features.Models;
 
-    public interface IChangeTracker<T> where T : ISyncEntity
+    public interface IChangeTracker<T> where T : class, ISyncEntity
     {
         T Insert(T item);
 

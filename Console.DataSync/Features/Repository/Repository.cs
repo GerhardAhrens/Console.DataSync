@@ -2,13 +2,17 @@
 {
     using Console.DataSync.Features.Models;
 
-    public class Repository<T> : IRepository<T>  where T : ISyncEntity
+    using System.Collections;
+
+    public class Repository<T> : IRepository<T>, IEnumerable<T> where T : class, ISyncEntity
     {
         private readonly Dictionary<Guid, T> _items = [];
         private readonly Dictionary<Guid, SyncState> _syncStates = new();
 
 
         public DeviceInfo Device { get; }
+
+        public int Count => this._items.Count;
 
         public Repository(string deviceName)
         {
@@ -32,6 +36,11 @@
             return item;
         }
 
+        public bool TryFind(Guid id, out T item)
+        {
+            return _items.TryGetValue(id, out item);
+        }
+
         public void Add(T item)
         {
             _items[item.Id] = item;
@@ -42,6 +51,15 @@
             _items.Remove(id);
         }
 
+        public void Replace(T item)
+        {
+            if (!_items.ContainsKey(item.Id))
+            {
+                throw new InvalidOperationException($"Datensatz {item.Id} existiert nicht.");
+            }
+
+            _items[item.Id] = item;
+        }
         public void Clear()
         {
             _items.Clear();
@@ -60,6 +78,16 @@
             }
 
             return state;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _items.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

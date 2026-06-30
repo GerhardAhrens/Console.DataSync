@@ -4,7 +4,7 @@
 
     public static class RepositoryFactory
     {
-        public static Repository<T> Create<T>(string deviceName) where T : ISyncEntity
+        public static Repository<T> Create<T>(string deviceName) where T : class, ISyncEntity
         {
             return new Repository<T>(deviceName);
         }

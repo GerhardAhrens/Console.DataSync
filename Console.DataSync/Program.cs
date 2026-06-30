@@ -122,7 +122,7 @@ namespace Console.DataSync
                 Ort = "Heidelberg"
             });
 
-            foreach (var item in repository.Items)
+            foreach (var item in repository)
             {
                 Console.WriteLine($"{item.Name,-15}" + $"{item.Ort,-15}" + $"Change={item.Sync.ChangeNumber}");
             }

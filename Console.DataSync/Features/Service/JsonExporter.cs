@@ -26,10 +26,12 @@
 
         public void Save(SyncPackage<T> package, string fileName)
         {
-            var options = new JsonSerializerOptions
+            JsonSerializerOptions jsonSerializerOptions = new()
             {
                 WriteIndented = true
             };
+
+            var options = jsonSerializerOptions;
 
             File.WriteAllText(fileName, JsonSerializer.Serialize(package, options));
         }

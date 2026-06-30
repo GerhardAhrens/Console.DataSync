@@ -11,31 +11,18 @@
 
             foreach (var remote in package.Items)
             {
-                var local = repository.Find(remote.Id);
-
-                //
-                // Neuer Datensatz
-                //
-
-                if (local == null)
+                if (!repository.TryFind(remote.Id, out var local))
                 {
+                    /* neuer Datensatz */
                     repository.Add(remote);
-
                     count++;
-
                     continue;
                 }
 
-                //
-                // Neuere Version?
-                //
-
+                /* Neuere Version */
                 if (SyncComparer.IsRemoteNewer(local.Sync, remote.Sync))
                 {
-                    repository.Remove(remote.Id);
-
-                    repository.Add(remote);
-
+                    repository.Replace(remote);
                     count++;
                 }
             }
